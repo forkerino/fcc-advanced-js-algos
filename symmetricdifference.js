@@ -10,9 +10,9 @@ the sets but not both (C △ D = {1, 4} △ {2, 3} = {1, 2, 3, 4}).*/
 
 function sym(...args) { 
    return args.map(arr => 
-      arr.filter((v, i, a) => a.indexOf(v) === i))
-        .reduce((a,b) => a.concat(b)
-        .filter(v => !b.includes(v) || !a.includes(v)));
+      [...new Set(arr)]) // remove duplicate
+        .reduce((a,b) => a.concat(b) // concat two arrays
+          .filter(v => !b.includes(v) || !a.includes(v))); // remove the values that are in both
  }
    /* first go over each subarray and remove all duplicate values,
   then reduce the concatenation of two arrays by only allowing 
