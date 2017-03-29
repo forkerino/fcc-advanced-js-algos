@@ -8,8 +8,8 @@ but not in both (A △ B = C = {1, 4}). For every additional symmetric differenc
 (say on a set D = {2, 3}), you should get the set with elements which are in either of the two 
 the sets but not both (C △ D = {1, 4} △ {2, 3} = {1, 2, 3, 4}).*/
 
-function sym(args) { 
-   return [...arguments].map(arr => 
+function sym(...args) { 
+   return args.map(arr => 
       arr.filter((v, i, a) => a.indexOf(v) === i))
         .reduce((a,b) => a.concat(b)
         .filter(v => !b.includes(v) || !a.includes(v)));
