@@ -13,20 +13,16 @@ Otherwise, return change in coin and bills, sorted in highest to lowest order.*/
 function checkCashRegister(price, cash, cid) {
   let change = cash*100 - price*100; 
   const values = [1,5,10,25,100,500,1000,2000,10000];
-  let drawer = cid.reduce((a,b)=> a + b[1],0);
+  let drawer = cid.reduce((a,b)=> a + b[1]*100,0);
   
-  if (drawer == change/100) return "Closed";
+  if (drawer == change) return "Closed";
   
-  let moneyback = cid.map((e,i) => [e[0],Math.round(e[1]*=100)/values[i]])
+  let moneyback = cid.map((e,i) => [e[0],e[1]*100])
         .reduceRight(function(p,c,i){
-            let tochange = change;
-            while (change >= values[i] && c[1]>0) {
-              change-=values[i];
-              c[1]--;
-            } 
-            p.push([c[0], (tochange-change)/100]);
-            return p;
-          },[]).filter(v => v[1] !== 0);
-  
+          let out = Math.min(change-change%values[i], c[1]);
+          change -= out;
+          return out ? p.concat([[c[0], out/100]]) : p;
+        },[]);
+
   return change > 0 ? "Insufficient Funds" : moneyback;
 }  
