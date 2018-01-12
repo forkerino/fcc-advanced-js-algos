@@ -9,11 +9,11 @@ but not in both (A △ B = C = {1, 4}). For every additional symmetric differenc
 the sets but not both (C △ D = {1, 4} △ {2, 3} = {1, 2, 3, 4}).*/
 
 function sym(...args) { 
-   return args.map(arr => 
-      [...new Set(arr)]) // remove duplicate
-        .reduce((a,b) => a.concat(b) // concat two arrays
-          .filter(v => !b.includes(v) || !a.includes(v))); // remove the values that are in both
+   return args.reduce((a,b) => a.concat([...new Set(b)]) // concat the deduped array to the result
+          .filter(v => !b.includes(v) || !a.includes(v)), []); // remove the values that are in both, [] = starting value
  }
    /* first go over each subarray and remove all duplicate values,
   then reduce the concatenation of two arrays by only allowing 
   values that are in either of the two (XOR).*/
+
+const sym = (...args) => args.reduce((a,b) => a.concat([...new Set(b)]).filter(v => !b.includes(v) || !a.includes(v)), [])
